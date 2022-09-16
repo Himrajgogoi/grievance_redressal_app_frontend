@@ -1,0 +1,53 @@
+import nextConnect  from "next-connect";
+import axios from "axios";
+
+const handler = nextConnect();
+
+handler.get((req, res)=>{
+    if(req.headers.authorization){
+        var config = {
+            headers: {
+                'Authorization': 'Bearer ' + req.headers.authorization,
+                'Content-Type': 'application/json'
+            }
+        }
+        axios
+            .get("https://grievance-redressal-app-server.herokuapp.com/api/accepted/", config)
+            .then(res1=>{
+                res.send(res1.data.accepted);
+            })
+            .catch(error=>{
+                res.send(error);
+            });
+    }
+    else{
+        axios
+        .get("https://grievance-redressal-app-server.herokuapp.com/api/accepted/")
+        .then(res1=>{
+            res.send(res1.data.accepted);
+        })
+        .catch(error=>{
+            res.send(error);
+        });
+    }
+});
+
+handler.post((req, res)=>{
+    var config = {
+        headers: {
+            'Authorization': 'Bearer ' + req.headers.authorization,
+            'Content-Type': 'application/json'
+        }
+    }
+    console.log(req.body)
+    axios
+        .post("https://grievance-redressal-app-server.herokuapp.com/api/accepted/", req.body, config)
+        .then(res1=>{
+            res.send(res1.data);
+        })
+        .catch(error=>{
+            res.send(error);
+        });
+});
+
+export default handler;
