@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Button from '@mui/material/Button';
@@ -8,18 +7,25 @@ import { Box, Grid, Modal, Paper,TextField, Card, CardContent } from '@mui/mater
 import Link from '@mui/material/Link';
 import Form from './form'
 import Cookies from 'js-cookie'
+import { toast } from "react-toastify";
 import BasicCard from '../components/card'
+import TitleComponent from '../components/title'
+import Loader from '../components/Loader';
+import SearchBar from '../components/searchbar';
+import dayjs from 'dayjs';
 
 export default function Accepted() {
   const [issues, setIssues] = useState([]);
+  const [searched, setSearch] = useState([]);
   const [error, setError] = useState(null);
   const [email_content, setEmail] = useState(null);
   const [subject, setSubject] = useState(null);
-  const [estimated_time, setEstimated] = useState(Date.now());
   const [modal, setModal] = useState(false);
   const [flag, setFlag] = useState(null);
   const [issue, setIssue] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(null)
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [admin, setAdmin] = useState(false);
+  const [loader, setLoader] = useState(true);
 
   const handleModal = () =>{
     setModal(!modal);
@@ -27,21 +33,52 @@ export default function Accepted() {
 
   
   const handleSend = () =>{
-    if(flag === "done"){
+    var tId = toast.loading("Posting...",{
+      position: toast.POSITION.TOP_CENTER
+    })
+    if(flag === "done" && email_content && subject){
       const options = {
         headers:{
           Authorization: Cookies.get("Token")
         }
       };
 
-      issue.email_content = email_content;
+      issue.mail_content = email_content;
       issue.subject = subject;
-      issue.time_of_completion = estimated_time;
-      console.log(issue)
+      issue.time_of_completion = dayjs()["$d"].toString();
+
       axios.post("/api/done",issue, options)
-      .then(res=>alert(res.data.status))
-      .catch(error=>alert(error));
+      .then(res=> toast.update(tId, { render: "Done successfully!", type: "success", autoClose: 2000, isLoading: false }))
+      .catch(error=> toast.update(tId, { render: "OOPS! An error occured.", type: "error",autoClose: 2000, isLoading: false }));
+      setTimeout(()=>{
+        window.location.reload();
+      }, 3000)
     }
+    else{
+      toast.update(tId, { render: "OOPS! An error occured.", type: "error",autoClose: 2000, isLoading: false })
+    }
+  }
+
+  const handleAdminDelete = (issue)=>{
+    var tId = toast.loading("Deleting...",{
+      position: toast.POSITION.TOP_CENTER
+    });
+
+    issue.id = issue._id;
+    const options = {
+      headers:{
+        Authorization: Cookies.get("Token")
+      }
+    };
+
+    axios.put("/api/accepted",issue, options)
+      .then(res=> toast.update(tId, { render: "Deleted successfully!", type: "success", autoClose: 2000, isLoading: false }))
+      .catch(error=> toast.update(tId, { render: "OOPS! An error occured.", type: "error",autoClose: 2000, isLoading: false }));
+      setTimeout(()=>{
+        window.location.reload();
+      }, 3000)
+    
+
   }
 
   useEffect(()=>{
@@ -53,13 +90,25 @@ export default function Accepted() {
           }
         };
         axios.get("/api/accepted",options)
-        .then(res=>setIssues(res.data))
-        .catch(error=>setError(error));
+        .then((res) => {
+          setIssues(res.data);
+          setLoader(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setLoader(false);
+        });
        }
        else{
         axios.get("/api/accepted")
-        .then(res=>setIssues(res.data))
-        .catch(error=>setError(error));
+        .then((res) => {
+          setIssues(res.data);
+          setLoader(false);
+        })
+        .catch((error) => {
+          setError(error);
+          setLoader(false);
+        });
        // axios
        //   .post("/api/main", data)
        //   .then(res=>console.log(res.data))
@@ -70,9 +119,10 @@ export default function Accepted() {
   useEffect(()=>{
     if(Cookies.get("Token")){
       setLoggedIn(true)
-    }
-    else{
-      setLoggedIn(false)
+
+      if(Cookies.get("Department") === '0'){
+        setAdmin(true);
+      }
     }
   },[])
   return (
@@ -112,19 +162,58 @@ export default function Accepted() {
                 </Paper>
 
       </Modal>
-    <Box sx={{m:4}}>
-      <h3>Accepted issues</h3>
-      {error ? <div><h5>{error}</h5></div>: <Grid container spacing={2}>
+    <Box sx={{m:4, minHeight:'80vh'  }}>
+    <SearchBar setSearch={setSearch} issues={issues}/>
+        {searched.length !==0 && <>
+          <TitleComponent title="Searched Issues" />
+          <Grid
+          container
+          spacing={2}
+          sx={{
+            justifyContent: {
+              xs: "center",
+              md: "flex-start",
+            },
+          }}>
+            {searched.map(issue=>(
+                <Grid item wrap key={issue._id}>
+                <Box sx={{ p: 1 }}>
+                  <BasicCard
+                    where={issue.where}
+                    description={issue.description}
+                    issue={issue}
+                  /> 
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
+        </>}
+      <TitleComponent title="Accepted issues"/>
+      {loader && <Loader/>}
+      {error && <div><h5>{error}</h5></div>} 
+      {issues.length !== 0 && <Grid container spacing={2} sx={{justifyContent:{
+            xs:'center',
+            md:'flex-start'
+          }}}>
       {issues.map(issue=>(
           <Grid item wrap key={issue._id}>
             
             <Box sx={{p:1}}>
             <BasicCard where={issue.where} description={issue.description} issue={issue}/> 
-            {loggedIn? <Box>
-              <Button size="small" variant="contained" onClick={()=>{setFlag("done"); setIssue(issue); handleModal();}} color="success">Done</Button>
+            {loggedIn? <Box sx={{mt:2}}>
+              <Button size="small" variant="contained" onClick={()=>{setFlag("done"); setIssue(issue); handleModal();}} color="success"   sx={{
+                          borderRadius:4
+                        }}>Done</Button>
               </Box>: <div></div>
-        }</Box></Grid>
+        }
+        {loggedIn && admin?  <Box sx={{mt:2}}>
+              <Button size="small" variant="contained" onClick={()=>{handleAdminDelete(issue);}} color="error"   sx={{
+                          borderRadius:4
+                        }}>Delete</Button>
+              </Box>: <div></div>}
+        </Box></Grid>
         ))}
+       
       </Grid>}
     </Box>
     </>

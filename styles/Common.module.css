@@ -29,7 +29,7 @@
 }
 
 .title a {
-  color: #0070f3;
+  color: rgb(90,103,227);
   text-decoration: none;
 }
 
@@ -108,9 +108,41 @@
   margin-left: 0.5rem;
 }
 
+
+.header{
+  margin-top: 2em;
+  position: relative;
+}
+
+.header::after{
+content: "";
+background:rgb(90,103,227);
+position: absolute;
+bottom: 1.5em;
+left: 0;
+height: 20%;
+width: 3.5em;
+}
+
 @media (max-width: 600px) {
   .grid {
     width: 100%;
     flex-direction: column;
   }
+
+  .header{
+    margin-top: 4em;
+    position: relative;
+  }
+  
+.header::after{
+  content: "";
+  background:rgb(90,103,227);
+  position: absolute;
+  bottom: 3em;
+  left: 0;
+  height: 10%;
+  width: 3.5em;
+  }
 }
+

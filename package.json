@@ -13,15 +13,19 @@
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.8.7",
-    "@mui/x-date-pickers": "^5.0.0-beta.0",
+    "@mui/x-date-pickers": "^5.0.3",
     "axios": "^0.27.2",
+    "browser-image-compression": "^2.0.0",
     "cloudinary": "^1.30.0",
     "cookies-next": "^2.1.1",
+    "dayjs": "^1.11.5",
     "js-cookie": "^3.0.1",
     "next": "12.2.0",
     "next-connect": "^0.10.1",
+    "next-pwa": "^5.6.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "eslint": "8.19.0",

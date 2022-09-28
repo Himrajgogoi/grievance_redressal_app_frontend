@@ -15,20 +15,42 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function SignIn(){
 
     const [email,setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+    
+    const router = useRouter();
 
     const signIn = ()=>{
+      var tId =  toast.loading("Logging In...",{
+        position: toast.POSITION.TOP_CENTER
+      })
         const creds = {
             email: email,
             password: password
         }
         axios.post("/api/auth", creds).then(res=>{
+          
           Cookies.set("Token", res.data.token)
-          alert(res.data.status)}).catch(error=>alert(error.error));
+          
+          if(res.data.department){
+            Cookies.set("Department", res.data.department)
+          }
+
+          else if(res.data.admin){
+            Cookies.set("Department", 0);
+            // Cookies.set("Admin", res.data.admin);
+          }
+
+          toast.update(tId, { render: "Logged In successfully!", type: "success", autoClose: 2000, isLoading: false })})
+          .catch(error=>toast.update(tId, { render: "OOPS! An error occured.", type: "error",autoClose: 2000, isLoading: false }));
+        setTimeout(()=>{
+          window.location.reload();
+        }, 3000)
     }
 
     const signOut = ()=>{
@@ -37,7 +59,7 @@ export default function SignIn(){
         alert(res.data.status)}).catch(error=>alert(error.error));
   }
     return(
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" >
         <CssBaseline />
         <Box
           sx={{
@@ -45,13 +67,14 @@ export default function SignIn(){
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            minHeight:'80vh' 
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Department Admin Sign in 
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>
             <TextField
@@ -75,10 +98,6 @@ export default function SignIn(){
               id="password"
               autoComplete="current-password"
               onChange={e=>setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="button"
