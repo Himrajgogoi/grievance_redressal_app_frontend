@@ -26,6 +26,7 @@ import BasicCard from "../components/card";
 import TitleComponent from "../components/title";
 import Loader from "../components/Loader";
 import SearchBar from "../components/searchbar";
+import Departments from "../components/departments";
 
 export default function Home() {
   const [issues, setIssues] = useState([]);
