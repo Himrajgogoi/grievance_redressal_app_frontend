@@ -18,7 +18,7 @@ handler.get((req, res)=>{
                 res.send(res1.data.accepted);
             })
             .catch(error=>{
-                res.send(error);
+                res.status(error.response.status).json(error.response.data);
             });
     }
     else{
@@ -28,7 +28,7 @@ handler.get((req, res)=>{
             res.send(res1.data.accepted);
         })
         .catch(error=>{
-            res.send(error);
+            res.status(error.response.status).json(error.response.data);
         });
     }
 });
@@ -48,7 +48,7 @@ handler.post((req, res)=>{
             res.send(res1.data);
         })
         .catch(error=>{
-            res.send(error);
+            res.status(error.response.status).json(error.response.data);
         });
 });
 
@@ -72,7 +72,7 @@ handler.put(async (req, res)=>{
             res.send(res1.data);
         })
         .catch(error=>{
-            res.send(error);
+            res.status(error.response.status).json(error.response.data);
         });
 });
 

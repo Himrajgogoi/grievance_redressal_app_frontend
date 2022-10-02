@@ -104,6 +104,11 @@ function Header(props) {
                 Addressed
               </Link>
             </MenuItem>
+            {department === "0" &&   <MenuItem>
+              <Link underline="none" color="inherit" href="/register">
+                Register
+              </Link>
+            </MenuItem>}
             <MenuItem>
               <Link href="/form">
                 <Button variant="outlined" size="small" color="success">
@@ -166,11 +171,16 @@ function Header(props) {
                   Addressed
                 </Link>
               </Grid>
+              {department === "0" && <Grid item lg={1} sx={{ml:3}}>
+                <Link underline="none" color="inherit" href="/register">
+                  Register
+                </Link>
+              </Grid>}
             </Grid>
           </Grid>
           {
             department && <Grid item lg={2}>
-              {Departments[Number(department)]} Department Admin
+              {department === "0"?"Root": Departments[Number(department)-1]} Department Admin
             </Grid>
           }
           <Grid item lg={2}>

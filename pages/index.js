@@ -27,6 +27,7 @@ import TitleComponent from "../components/title";
 import Loader from "../components/Loader";
 import SearchBar from "../components/searchbar";
 import Departments from "../components/departments";
+import EmptyScreen from "../components/empty_screen";
 
 export default function Home() {
   const [issues, setIssues] = useState([]);
@@ -309,6 +310,7 @@ export default function Home() {
             ))}
           </Grid>
         )}
+         {issues.length == 0 && loader === false && <EmptyScreen/>}
       </Box>
     </>
   );

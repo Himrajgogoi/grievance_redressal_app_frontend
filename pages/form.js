@@ -52,7 +52,7 @@ export default function Form() {
           phone: phone,
           email: email,
           department: department,
-          department_name: Departments[Number(department)],
+          department_name: Departments[Number(department)-1],
           where: where,
           description: description,
           availability_time: availability_time,
@@ -64,7 +64,7 @@ export default function Form() {
           phone: phone,
           email: email,
           department: department,
-          department_name: Departments[Number(department)],
+          department_name: Departments[Number(department)-1],
           where: where,
           description: description,
           availability_time: availability_time,
@@ -135,14 +135,9 @@ export default function Form() {
                     labelId="dept"
                     input={<OutlinedInput label="Jurisdiction Department" />}
                   >
-                    <MenuItem value={1}>{Departments[1]}</MenuItem>
-                    <MenuItem value={2}>{Departments[2]}</MenuItem>
-                    <MenuItem value={3}>{Departments[3]}</MenuItem>
-                    <MenuItem value={4}>{Departments[4]}</MenuItem>
-                    <MenuItem value={5}>{Departments[5]}</MenuItem>
-                    <MenuItem value={6}>{Departments[6]}</MenuItem>
-                    <MenuItem value={7}>{Departments[7]}</MenuItem>
-                    <MenuItem value={8}>{Departments[8]}</MenuItem>
+                  {Departments.map((name,index)=>
+                   (<MenuItem key={index+1} value={index+1}>{name}</MenuItem>)
+                    )}
                   </Select>
                 </FormControl>
               </Grid>

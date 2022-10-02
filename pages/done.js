@@ -12,6 +12,7 @@ import BasicCard from "../components/card";
 import TitleComponent from "../components/title";
 import Loader from "../components/Loader";
 import SearchBar from "../components/searchbar";
+import EmptyScreen from "../components/empty_screen";
 
 export default function Done() {
   const [issues, setIssues] = useState([]);
@@ -181,6 +182,7 @@ export default function Done() {
           ))}
         </Grid>
       )}
+      {issues.length == 0  && loader === false && <EmptyScreen/>}
     </Box>
   );
 }

@@ -91,10 +91,10 @@ export default function BasicCard(props) {
               when: {props.issue.when.toString().split("T")[0]}
             </Typography>
             <Chip
-              label={Departments[Number(props.issue.department)]}
+              label={Departments[Number(props.issue.department)-1]}
               sx={{
                 color: "white",
-                backgroundColor: Colors[Number(props.issue.department)],
+                backgroundColor: Colors[Number(props.issue.department)-1],
               }}
             />
           </Box>
