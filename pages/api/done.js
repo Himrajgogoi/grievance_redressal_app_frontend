@@ -3,6 +3,7 @@ import axios from "axios";
 const handler = nextConnect();
 import {v2 as cloudinary} from "cloudinary"
 
+// for fetching completed issues
 handler.get((req, res)=>{
     if(req.headers.authorization){
         var config = {
@@ -32,6 +33,7 @@ handler.get((req, res)=>{
     }
 });
 
+// after an issue has been completed, we move it to the done list
 handler.post((req, res)=>{
     var config = {
         headers: {
@@ -50,7 +52,7 @@ handler.post((req, res)=>{
 });
 
 
-// for admin deletion
+// for admin deletion of completed issues
 handler.put(async (req, res)=>{
 
     if(req.body.public_id){

@@ -131,7 +131,7 @@ width: 3.5em;
   }
 
   .header{
-    margin-top: 4em;
+    margin-top: 3em;
     position: relative;
   }
   
@@ -139,7 +139,7 @@ width: 3.5em;
   content: "";
   background:rgb(90,103,227);
   position: absolute;
-  bottom: 3em;
+  bottom: 4em;
   left: 0;
   height: 10%;
   width: 3.5em;

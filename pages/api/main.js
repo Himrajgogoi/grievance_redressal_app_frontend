@@ -4,6 +4,7 @@ import {v2 as cloudinary} from "cloudinary"
 import Departments from "../../components/departments";
 const handler = nextConnect();
 
+// for fetching currently posted issues
 handler.get((req, res)=>{
     if(req.headers.authorization){
         var config = {
@@ -34,6 +35,7 @@ handler.get((req, res)=>{
     }
 });
 
+// for posting new issues
 handler.post(async(req, res)=>{
 
     if(req.body.image){
@@ -55,6 +57,7 @@ handler.post(async(req, res)=>{
         });
 });
 
+// for rejecting certain issues
 handler.put(async(req, res)=>{
     
     if(req.body.public_id){

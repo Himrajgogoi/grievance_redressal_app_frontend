@@ -1,6 +1,5 @@
 import nextConnect  from "next-connect";
 import axios from "axios";
-import {deleteCookie, setCookie} from "cookies-next"
 const handler = nextConnect();
 
 // for logging in department admin

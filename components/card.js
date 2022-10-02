@@ -68,6 +68,7 @@ export default function BasicCard(props) {
             {props.where}
           </Typography>
           <Typography
+            noWrap
             sx={{
               fontSize: 18,
               "&:hover": {
@@ -77,7 +78,7 @@ export default function BasicCard(props) {
             component="div"
             onClick={openPopover}
           >
-            {props.description.slice(0, 80)}...
+            {props.description}
           </Typography>
           <Box
             sx={{

@@ -4,6 +4,7 @@ import {v2 as cloudinary} from "cloudinary"
 
 const handler = nextConnect();
 
+// for fetching accepted issues 
 handler.get((req, res)=>{
     if(req.headers.authorization){
         var config = {
@@ -33,6 +34,7 @@ handler.get((req, res)=>{
     }
 });
 
+// for accepting new issue
 handler.post((req, res)=>{
 
 
@@ -52,7 +54,7 @@ handler.post((req, res)=>{
         });
 });
 
-// for admin deletion
+// for admin deletion of accepted issues
 handler.put(async (req, res)=>{
 
     if(req.body.public_id){
