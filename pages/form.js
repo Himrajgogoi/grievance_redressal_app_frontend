@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import * as React from "react";
 import Image from "next/image";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   FormControl,
   Input,
@@ -20,6 +21,8 @@ import { toast } from "react-toastify";
 import imageCompression from 'browser-image-compression';
 import Departments from "../components/departments";
 
+const recaptchaPublicKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
 export default function Form() {
   const [name, setName] = useState(null);
   const [phone, setPhone] = useState(null);
@@ -29,6 +32,9 @@ export default function Form() {
   const [description, setDescription] = useState(null);
   const [availability_time, setAvailability_time] = useState(null);
   const [image, setImage] = useState(null);
+  const [captchaCode,setCaptchaCode] = useState(null);
+
+  const recaptchaRef = React.createRef();
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -37,12 +43,22 @@ export default function Form() {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+    
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if (!captchaCode) {
+      return;
+    }
+
+    setCaptchaCode(captchaCode);
+    recaptchaRef.current.reset();
+  };
 
   const submit = async () => {
+    recaptchaRef.current.execute();
     var tId = toast.loading("Posting...",{
       position: toast.POSITION.TOP_CENTER
     })
-    if(name && phone && email && department && where && description && availability_time){
+    if(name && phone && email && department && where && description && availability_time && captchaCode){
       let creds;
       if (image) {
         const compressedImage = await imageCompression(image,{maxSizeMB:2, useWebWorker: true});
@@ -166,6 +182,13 @@ export default function Form() {
                   onChange={(e) => setWhere(e.target.value)}
                 />
               </Grid>
+              <Grid item  xs={12} lg={6}>
+              <ReCAPTCHA
+	                  ref={recaptchaRef}
+                    sitekey="6LcM0FwiAAAAAL-Oc_0gOBT4gqUKq8UpxwONtzlU"
+                    onChange={onReCAPTCHAChange}
+	            />
+              </Grid>
               <Grid item xs={12} lg={6}>
                 <label htmlFor="contained-button-file">
                   <Input
@@ -180,6 +203,7 @@ export default function Form() {
                   </Button>
                 </label>
               </Grid>
+
             </Grid>
           </Grid>
           <Grid item lg={5} sx={{ display:{xs:"none", lg:"flex"}}}>
