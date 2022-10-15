@@ -18,10 +18,10 @@ import {
 } from "@mui/material";
 import TitleComponent from "../components/title";
 import { toast } from "react-toastify";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 import Departments from "../components/departments";
 
-const recaptchaPublicKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
 
 export default function Form() {
   const [name, setName] = useState(null);
@@ -32,7 +32,7 @@ export default function Form() {
   const [description, setDescription] = useState(null);
   const [availability_time, setAvailability_time] = useState(null);
   const [image, setImage] = useState(null);
-  const [captchaCode,setCaptchaCode] = useState(null);
+  const [captchaCode, setCaptchaCode] = useState(null);
 
   const recaptchaRef = React.createRef();
 
@@ -43,62 +43,96 @@ export default function Form() {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
-    
+
+
+  /// to initialize reCaptcha
   const onReCAPTCHAChange = async (captchaCode) => {
     if (!captchaCode) {
+      toast.error("An error occured!",{autoClose:2000});
       return;
-    }
+    } 
+    else {
+      var tId = toast.loading("Posting...", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      if (
+        name &&
+        phone &&
+        email &&
+        department &&
+        where &&
+        description &&
+        availability_time) {
 
-    setCaptchaCode(captchaCode);
+        let creds;
+        if (image) {
+          const compressedImage = await imageCompression(image, {
+            maxSizeMB: 2,
+            useWebWorker: true,
+          });
+          const img = await getBase64(compressedImage);
+          creds = {
+            name: name,
+            phone: phone,
+            email: email,
+            department: department,
+            department_name: Departments[Number(department) - 1],
+            where: where,
+            description: description,
+            availability_time: availability_time,
+            image: img,
+            captcha: captchaCode,
+          };
+        } else {
+          creds = {
+            name: name,
+            phone: phone,
+            email: email,
+            department: department,
+            department_name: Departments[Number(department) - 1],
+            where: where,
+            description: description,
+            availability_time: availability_time,
+            captcha: captchaCode,
+          };
+        }
+        axios
+          .post("/api/main", creds)
+          .then((res) =>
+            toast.update(tId, {
+              render: "Posted successfully!",
+              type: "success",
+              autoClose: 2000,
+              isLoading: false,
+            })
+          )
+          .catch((error) =>
+            toast.update(tId, {
+              render: "OOPS! An error occured.",
+              type: "error",
+              autoClose: 2000,
+              isLoading: false,
+            })
+          );
+      } else {
+        toast.update(tId, {
+          render: "OOPS! Some necessary fields are missing",
+          type: "error",
+          autoClose: 2000,
+          isLoading: false,
+        });
+      }
+    }
     recaptchaRef.current.reset();
   };
 
   const submit = async () => {
     recaptchaRef.current.execute();
-    var tId = toast.loading("Posting...",{
-      position: toast.POSITION.TOP_CENTER
-    })
-    if(name && phone && email && department && where && description && availability_time && captchaCode){
-      let creds;
-      if (image) {
-        const compressedImage = await imageCompression(image,{maxSizeMB:2, useWebWorker: true});
-        const img = await getBase64(compressedImage);
-        creds = {
-          name: name,
-          phone: phone,
-          email: email,
-          department: department,
-          department_name: Departments[Number(department)-1],
-          where: where,
-          description: description,
-          availability_time: availability_time,
-          image: img,
-        };
-      } else {
-        creds = {
-          name: name,
-          phone: phone,
-          email: email,
-          department: department,
-          department_name: Departments[Number(department)-1],
-          where: where,
-          description: description,
-          availability_time: availability_time,
-        };
-      }
-      axios
-        .post("/api/main", creds)
-        .then((res) => toast.update(tId, { render: "Posted successfully!", type: "success", autoClose: 2000, isLoading: false }))
-        .catch((error) => toast.update(tId, { render: "OOPS! An error occured.", type: "error",autoClose: 2000, isLoading: false }));
-    }
-    else{
-      toast.update(tId, { render: "OOPS! Some necessary fields are missing", type: "error",autoClose: 2000, isLoading: false });
-    }
   };
 
   return (
-    <Box sx={{ m: 4, minHeight:'80vh'  }}>
-      <TitleComponent title="Post an Issue."/>
+    <Box sx={{ m: 4, minHeight: "80vh" }}>
+      <TitleComponent title="Post an Issue." />
       <Box
         component="form"
         sx={{
@@ -151,9 +185,11 @@ export default function Form() {
                     labelId="dept"
                     input={<OutlinedInput label="Jurisdiction Department" />}
                   >
-                  {Departments.map((name,index)=>
-                   (<MenuItem key={index+1} value={index+1}>{name}</MenuItem>)
-                    )}
+                    {Departments.map((name, index) => (
+                      <MenuItem key={index + 1} value={index + 1}>
+                        {name}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Grid>
@@ -182,12 +218,13 @@ export default function Form() {
                   onChange={(e) => setWhere(e.target.value)}
                 />
               </Grid>
-              <Grid item  xs={12} lg={6}>
-              <ReCAPTCHA
-	                  ref={recaptchaRef}
-                    sitekey="6LcM0FwiAAAAAL-Oc_0gOBT4gqUKq8UpxwONtzlU"
-                    onChange={onReCAPTCHAChange}
-	            />
+              <Grid item xs={12} lg={6}>
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="invisible"
+                  sitekey={process.env.RECAPTCHA_SITE_KEY}
+                  onChange={onReCAPTCHAChange}
+                />
               </Grid>
               <Grid item xs={12} lg={6}>
                 <label htmlFor="contained-button-file">
@@ -195,23 +232,33 @@ export default function Form() {
                     accept="image/*"
                     id="contained-button-file"
                     type="file"
-                    sx={{display:'none', m:1}}
-                    onChange={e=>{ setImage(e.target.files[0]); toast.success("Selected Image!",{autoClose:2000, position: toast.POSITION.TOP_CENTER})}}
+                    sx={{ display: "none", m: 1 }}
+                    onChange={(e) => {
+                      setImage(e.target.files[0]);
+                      toast.success("Selected Image!", {
+                        autoClose: 2000,
+                        position: toast.POSITION.TOP_CENTER,
+                      });
+                    }}
                   />
-                  <Button variant="outlined" size="large" component="span"  sx={{ m:1}}>
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    component="span"
+                    sx={{ m: 1 }}
+                  >
                     Upload a photo
                   </Button>
                 </label>
               </Grid>
-
             </Grid>
           </Grid>
-          <Grid item lg={5} sx={{ display:{xs:"none", lg:"flex"}}}>
+          <Grid item lg={5} sx={{ display: { xs: "none", lg: "flex" } }}>
             <Image
-            src="/Checklist.jpg"
-            alt="vector icon"
-            height="300"
-            width="500"
+              src="/Checklist.jpg"
+              alt="vector icon"
+              height="300"
+              width="500"
             />
           </Grid>
         </Grid>
@@ -222,7 +269,7 @@ export default function Form() {
             /> */}
       </Box>
       <Button
-        type="submit"
+        type="button"
         variant="contained"
         onClick={submit}
         sx={{

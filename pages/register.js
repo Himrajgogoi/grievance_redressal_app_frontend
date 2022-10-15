@@ -14,6 +14,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function Register() {
   const [email, setEmail] = useState(null);
@@ -23,6 +24,8 @@ function Register() {
 
   const router = useRouter();
 
+  const recaptchaRef = React.createRef();
+
   useEffect(() => {
     if (Cookies.get("Token") && Cookies.get("Department") === "0") {
       setAdmin(true);
@@ -31,45 +34,58 @@ function Register() {
     }
   });
 
-  const signUp = () => {
-    var tId = toast.loading("Signing Up...", {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    if (email && password && department) {
-      const creds = {
-        email: email,
-        password: password,
-        department: department,
-      };
-      axios
-        .put("/api/auth", creds)
-        .then((res) => {
-          toast.update(tId, {
-            render: "Signed Up successfully!",
-            type: "success",
-            autoClose: 2000,
-            isLoading: false,
-          });
-        })
-        .catch((error) =>
-          toast.update(tId, {
-            render: "OOPS! An error occured.",
-            type: "error",
-            autoClose: 2000,
-            isLoading: false,
-          })
-        );
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } else {
-      toast.update(tId, {
-        render: "OOPS! Some necessary fields are missing",
-        type: "error",
-        autoClose: 2000,
-        isLoading: false,
+  /// to initialize reCaptcha
+  const onReCAPTCHAChange = async (captchaCode) => {
+    if (!captchaCode) {
+      toast.error("An error occured!",{autoClose:2000});
+      return;
+    } 
+    else{
+      var tId = toast.loading("Signing Up...", {
+        position: toast.POSITION.TOP_CENTER,
       });
+      if (email && password && department) {
+        const creds = {
+          email: email,
+          password: password,
+          department: department,
+          captcha: captchaCode
+        };
+        axios
+          .put("/api/auth", creds)
+          .then((res) => {
+            toast.update(tId, {
+              render: "Signed Up successfully!",
+              type: "success",
+              autoClose: 2000,
+              isLoading: false,
+            });
+          })
+          .catch((error) =>
+            toast.update(tId, {
+              render: "OOPS! An error occured.",
+              type: "error",
+              autoClose: 2000,
+              isLoading: false,
+            })
+          );
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000);
+      } else {
+        toast.update(tId, {
+          render: "OOPS! Some necessary fields are missing",
+          type: "error",
+          autoClose: 2000,
+          isLoading: false,
+        });
+      }
     }
+    recaptchaRef.current.reset();
+  }
+
+  const signUp = () => {
+    recaptchaRef.current.execute();
   };
 
   return (
@@ -136,7 +152,12 @@ function Register() {
                   ))}
                 </Select>
               </FormControl>
-
+              <ReCAPTCHA
+                  ref={recaptchaRef}
+                  size="invisible"
+                  sitekey={process.env.RECAPTCHA_SITE_KEY}
+                  onChange={onReCAPTCHAChange}
+                />
               <Button
                 type="button"
                 fullWidth
