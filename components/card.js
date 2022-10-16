@@ -17,6 +17,8 @@ import TextField from "@mui/material";
 import Departments from "./departments";
 import { Colors } from "./departments";
 
+
+// creating a card component for displaying the issues
 export default function BasicCard(props) {
   const [anchor, setAnchor] = useState(null);
   const openPopover = (event) => {

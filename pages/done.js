@@ -23,6 +23,7 @@ export default function Done() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [admin, setAdmin] = useState(false);
 
+  // for fetching completed issues
   useEffect(() => {
     if (Cookies.get("Token")) {
       const options = {
@@ -57,7 +58,8 @@ export default function Done() {
       //   .catch(error=>console.log(error));
     }
   }, []);
-
+ 
+  // for verifying whether there is a logged in user or not
   useEffect(() => {
     if (Cookies.get("Token")) {
       setLoggedIn(true);
@@ -67,7 +69,8 @@ export default function Done() {
       }
     }
   }, []);
-
+  
+  //for root admin deletion of completed issues
   const handleAdminDelete = (issue) => {
     var tId = toast.loading("Deleting...", {
       position: toast.POSITION.TOP_CENTER,

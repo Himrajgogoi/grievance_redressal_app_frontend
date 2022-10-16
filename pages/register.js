@@ -34,7 +34,7 @@ function Register() {
     }
   });
 
-  /// to initialize reCaptcha
+  /// to initialize reCaptcha and register the admin if not a spam
   const onReCAPTCHAChange = async (captchaCode) => {
     if (!captchaCode) {
       toast.error("An error occured!",{autoClose:2000});
@@ -83,7 +83,8 @@ function Register() {
     }
     recaptchaRef.current.reset();
   }
-
+  
+  //handles signup
   const signUp = () => {
     recaptchaRef.current.execute();
   };

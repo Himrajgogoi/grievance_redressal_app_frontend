@@ -52,7 +52,7 @@ export default function Home() {
   //   setEstimated(newValue);
   // };
 
-  // sending email
+  // sending necessary email to griever whether the issue has been accepted or rejected and moving the issue to accepted list if accepted.
   const handleSend = () => {
     var tId = toast.loading("Posting...", {
       position: toast.POSITION.TOP_CENTER,
@@ -179,21 +179,22 @@ export default function Home() {
             margin="normal"
             required
             fullWidth
+            name="subject"
+            label="Subject"
+            id="subject"
+            onChange={(e) => setSubject(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="email_content"
             label="Email content"
             name="email_content"
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="subject"
-            label="Subject"
-            id="subject"
-            onChange={(e) => setSubject(e.target.value)}
-          />
+       
               <FormControlLabel
               control={<Checkbox value="remember" color="primary" onChange={e=>setToPrincipal(e.target.checked)} />}
               label="Send a copy to the principal"

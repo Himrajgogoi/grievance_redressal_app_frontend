@@ -23,7 +23,8 @@ export default function SignIn() {
   const [password, setPassword] = useState(null);
 
   const router = useRouter();
-
+  
+  // handle signIn admin
   const signIn = () => {
     var tId = toast.loading("Logging In...", {
       position: toast.POSITION.TOP_CENTER,

@@ -43,6 +43,7 @@ export default function Accepted() {
     setModal(!modal);
   };
 
+  // once issue is completed, we send a response to the griever and to the principal if needed and move the issue to done list
   const handleSend = () => {
     var tId = toast.loading("Posting...", {
       position: toast.POSITION.TOP_CENTER,
@@ -89,7 +90,8 @@ export default function Accepted() {
       });
     }
   };
-
+ 
+  // for root admin deletion of accepted issues
   const handleAdminDelete = (issue) => {
     var tId = toast.loading("Deleting...", {
       position: toast.POSITION.TOP_CENTER,
@@ -124,7 +126,8 @@ export default function Accepted() {
       window.location.reload();
     }, 3000);
   };
-
+ 
+  // for fetching the accepted issues
   useEffect(() => {
     if (Cookies.get("Token")) {
       const options = {
@@ -159,7 +162,8 @@ export default function Accepted() {
       //   .catch(error=>console.log(error));
     }
   }, []);
-
+  
+  // for verifying whether there is a logged in user or not
   useEffect(() => {
     if (Cookies.get("Token")) {
       setLoggedIn(true);
@@ -182,21 +186,22 @@ export default function Accepted() {
             margin="normal"
             required
             fullWidth
+            name="subject"
+            label="Subject"
+            id="subject"
+            onChange={(e) => setSubject(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="email_content"
             label="Email content"
             name="email_content"
             autoFocus
             onChange={(e) => setEmail(e.target.value)}
           />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="subject"
-            label="Subject"
-            id="subject"
-            onChange={(e) => setSubject(e.target.value)}
-          />
+        
           <FormControlLabel
             control={
               <Checkbox

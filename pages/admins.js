@@ -18,7 +18,8 @@ function Admins() {
   const [error, setError] = useState(null);
 
   const router = useRouter();
-
+  
+  // for fetching all the admins
   useEffect(() => {
     if (Cookies.get("Token") && Cookies.get("Department") === "0") {
       setAdmin(true);
@@ -42,7 +43,8 @@ function Admins() {
       router.push("/");
     }
   });
-
+  
+  // for admin deletion by root admin
   const deleteDepartmentAdmin = (id) =>{
     var tId = toast.loading("Deleting...", {
         position: toast.POSITION.TOP_CENTER,

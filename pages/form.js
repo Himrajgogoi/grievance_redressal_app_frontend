@@ -45,7 +45,7 @@ export default function Form() {
     });
 
 
-  /// to initialize reCaptcha
+  /// to initialize reCaptcha and post an issue if not spam
   const onReCAPTCHAChange = async (captchaCode) => {
     if (!captchaCode) {
       toast.error("An error occured!",{autoClose:2000});
@@ -125,7 +125,9 @@ export default function Form() {
     }
     recaptchaRef.current.reset();
   };
+  
 
+  // handling form submission
   const submit = async () => {
     recaptchaRef.current.execute();
   };

@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This project has been built using Next.js and deployed over vercel.
 
-## Getting Started
+The folder structure is as follows:
 
-First, run the development server:
+![Alt text](./folder.png?raw=true "Folder Structure")
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1. Here, we have the components folder in which we have defined the reusable components for the application
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. In the pages folder, we have defined the various routes of the application and two special files the _app.js and _document.js
+---> In _app.js, we wrap the page components with the necessary Header and Footer along with other Wrappers, one for DateTimePicker and the other for toasts in the application.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+----> In  _document.js, we add the necessary meta and link tags since this application uses google fonts and is a PWA (Progressive Web Application).
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+3. In the pages/api folder, we have defined the api endpoints which interact with our server to process our requests.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+4. The public folder contains all the images and icons that we use throughout our application and also the manifest.json file for providing the properties of our PWA like color themes, start url, which icons to use etc.
 
-## Learn More
+5. The styles folder contains the css files for our application.
 
-To learn more about Next.js, take a look at the following resources:
+This project in its basic form tends to act as the first step to a more comprehensive application with more powerful functionalities. We will make this project open source for the students of our college, Jorhat Engineering College, to collaborate and contribute collectively to take this project further and make it more complete.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Cheers !
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

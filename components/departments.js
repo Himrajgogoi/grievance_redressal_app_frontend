@@ -4,9 +4,17 @@ const Departments = [
     "Computer Science",
     "Mechanical",
     "Electrical",
+    "Humanities",
+    "Physics",
+    "Chemistry",
+    "Mathematics",
     "MCA",
+    "Medical",
+    "Library",
     "Campus",
-    "Water"
+    "Water",
+    "Electricity",
+    "Bus Service"
 
 ];
 
@@ -18,7 +26,15 @@ export const Colors = [
     "black",
     "violet",
     "indigo",
-    "brown",
+    "teal",
+    "orange",
+    "olive",
+    "coral",
+    "magenta",
+    "#FF69B4",
+    "#0066CC",
+    "maroon",
+    "#001B35"
 ];
 
 

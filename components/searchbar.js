@@ -8,7 +8,7 @@ function SearchBar({setSearch, issues}) {
 
 const [word, setWord] = useState("");
 
-  //for search
+  //for search pattern creation
   const makepattern = (word) => {
     let splitted = word.split("");
     let pattern = "";
@@ -18,6 +18,7 @@ const [word, setWord] = useState("");
     return pattern + "";
   };
 
+  // here we do the actual search with the where,description and department names
   const search = (item) => {
     if(item === ""){
         window.location.reload();
