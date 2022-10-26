@@ -14,7 +14,7 @@ handler.get((req, res)=>{
             }
         }
         axios
-            .get("https://grievance-redressal-app-server.herokuapp.com/api/accepted/", config)
+            .get(" https://grievance-redressal-app-server.onrender.com/api/accepted/", config)
             .then(res1=>{
                 res.send(res1.data.accepted);
             })
@@ -24,7 +24,7 @@ handler.get((req, res)=>{
     }
     else{
         axios
-        .get("https://grievance-redressal-app-server.herokuapp.com/api/accepted/")
+        .get(" https://grievance-redressal-app-server.onrender.com/api/accepted/")
         .then(res1=>{
             res.send(res1.data.accepted);
         })
@@ -45,7 +45,7 @@ handler.post((req, res)=>{
         }
     }
     axios
-        .post("https://grievance-redressal-app-server.herokuapp.com/api/accepted/", req.body, config)
+        .post(" https://grievance-redressal-app-server.onrender.com/api/accepted/", req.body, config)
         .then(res1=>{
             res.send(res1.data);
         })
@@ -69,7 +69,7 @@ handler.put(async (req, res)=>{
     }
 
     axios
-        .put("https://grievance-redressal-app-server.herokuapp.com/api/accepted/", req.body, config)
+        .put(" https://grievance-redressal-app-server.onrender.com/api/accepted/", req.body, config)
         .then(res1=>{
             res.send(res1.data);
         })

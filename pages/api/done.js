@@ -13,7 +13,7 @@ handler.get((req, res)=>{
             }
         }
         axios
-            .get("https://grievance-redressal-app-server.herokuapp.com/api/done/", config)
+            .get("https://grievance-redressal-app-server.onrender.com/api/done/", config)
             .then(res1=>{
                 res.send(res1.data.done);
             })
@@ -23,7 +23,7 @@ handler.get((req, res)=>{
     }
     else{
         axios
-            .get("https://grievance-redressal-app-server.herokuapp.com/api/done/")
+            .get(" https://grievance-redressal-app-server.onrender.com/api/done/")
             .then(res1=>{
                 res.send(res1.data.done);
             })
@@ -42,7 +42,7 @@ handler.post((req, res)=>{
         }
     }
     axios
-        .post("https://grievance-redressal-app-server.herokuapp.com/api/done/", req.body, config)
+        .post(" https://grievance-redressal-app-server.onrender.com/api/done/", req.body, config)
         .then(res1=>{
             res.send(res1.data);
         })
@@ -67,7 +67,7 @@ handler.put(async (req, res)=>{
     }
 
     axios
-        .put("https://grievance-redressal-app-server.herokuapp.com/api/done/", req.body, config)
+        .put(" https://grievance-redressal-app-server.onrender.com/api/done/", req.body, config)
         .then(res1=>{
             res.send(res1.data);
         })

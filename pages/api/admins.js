@@ -11,7 +11,7 @@ handler.get((req,res)=>{
         }
     }
 
-    axios.get("https://grievance-redressal-app-server.herokuapp.com/api/auth/admins", config).then(res1=>{
+    axios.get(" https://grievance-redressal-app-server.onrender.com/api/auth/admins", config).then(res1=>{
         res.send(res1.data.admins);
     })
     .catch(error=>{
@@ -29,7 +29,7 @@ handler.post((req,res)=>{
         }
     }
 
-    axios.post("https://grievance-redressal-app-server.herokuapp.com/api/auth/delete",req.body,config).then(res1=>{
+    axios.post(" https://grievance-redressal-app-server.onrender.com/api/auth/delete",req.body,config).then(res1=>{
         res.send(res1.data);
     })
     .catch(error=>{

@@ -15,7 +15,7 @@ handler.get((req, res) => {
     };
     axios
       .get(
-        "https://grievance-redressal-app-server.herokuapp.com/api/main/",
+        " https://grievance-redressal-app-server.onrender.com/api/main/",
         config
       )
       .then((res1) => {
@@ -26,7 +26,7 @@ handler.get((req, res) => {
       });
   } else {
     axios
-      .get("https://grievance-redressal-app-server.herokuapp.com/api/main/")
+      .get(" https://grievance-redressal-app-server.onrender.com/api/main/")
       .then((res1) => {
         res.send(res1.data.issues);
       })
@@ -64,7 +64,7 @@ handler.post(async (req, res) => {
 
     axios
       .post(
-        "https://grievance-redressal-app-server.herokuapp.com/api/main/",
+        " https://grievance-redressal-app-server.onrender.com/api/main/",
         req.body
       )
       .then((res1) => {
@@ -94,7 +94,7 @@ handler.put(async (req, res) => {
 
   axios
     .put(
-      "https://grievance-redressal-app-server.herokuapp.com/api/main/",
+      " https://grievance-redressal-app-server.onrender.com/api/main/",
       req.body,
       config
     )

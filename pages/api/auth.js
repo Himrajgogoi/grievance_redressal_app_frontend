@@ -6,7 +6,7 @@ const handler = nextConnect();
 handler.post((req, res) => {
   axios
     .post(
-      "https://grievance-redressal-app-server.herokuapp.com/api/auth/login",
+      " https://grievance-redressal-app-server.onrender.com/api/auth/login",
       req.body
     )
     .then((res1) => {
@@ -20,7 +20,7 @@ handler.post((req, res) => {
 // for logging out the admin
 handler.get((req, res) => {
   axios
-    .get("https://grievance-redressal-app-server.herokuapp.com/api/auth/logout")
+    .get(" https://grievance-redressal-app-server.onrender.com/api/auth/logout")
     .then((res1) => {
       res.send(res1.data);
     })
@@ -45,7 +45,7 @@ handler.put(async (req, res) => {
     delete req.body.captcha;
     axios
       .post(
-        "https://grievance-redressal-app-server.herokuapp.com/api/auth/register",
+        " https://grievance-redressal-app-server.onrender.com/api/auth/register",
         req.body
       )
       .then((res1) => {
