@@ -19,6 +19,7 @@ import {
 import TitleComponent from "../components/title";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
+import isEmail from "validator/lib/isemail";
 import Departments from "../components/departments";
 
 
@@ -57,8 +58,7 @@ export default function Form() {
       });
       if (
         name &&
-        phone &&
-        email &&
+        phone && phone > 0 && phone.toString().length === 10 && isEmail(email) &&
         department &&
         where &&
         description &&
@@ -159,6 +159,7 @@ export default function Form() {
               <Grid item xs={12} lg={6}>
                 <TextField
                   required
+                  type="number"
                   id="outlined-required"
                   label="Phone-No."
                   onChange={(e) => setPhone(e.target.value)}

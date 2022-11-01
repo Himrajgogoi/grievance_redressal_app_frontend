@@ -27,7 +27,8 @@
     "react-dom": "18.2.0",
     "react-google-recaptcha": "^2.1.0",
     "react-google-recaptcha-v3": "^1.10.0",
-    "react-toastify": "^9.0.8"
+    "react-toastify": "^9.0.8",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "eslint": "8.19.0",

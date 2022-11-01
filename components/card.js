@@ -56,6 +56,9 @@ export default function BasicCard(props) {
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             availability time: <strong>{props.issue.availability_time}</strong>
           </Typography>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            contact number: <strong>{props.issue.phone}</strong>
+          </Typography>
         </Box>
       </Popover>
       <Card sx={{ width: 275, height: 410, pb: 1 }}>
