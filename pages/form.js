@@ -19,7 +19,7 @@ import {
 import TitleComponent from "../components/title";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
-import isEmail from "validator/lib/isemail";
+import isEmail from "validator/lib/isEmail";
 import Departments from "../components/departments";
 
 
