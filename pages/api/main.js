@@ -52,7 +52,7 @@ handler.post(async (req, res) => {
   if (response.data.success) {
     if (req.body.image) {
       const img = await cloudinary.uploader.upload(req.body.image, {
-        folder: Departments[req.body.department],
+        folder: Departments[Number(req.body.department) - 1],
       });
       const image = img.secure_url;
       const public_id = img.public_id;
