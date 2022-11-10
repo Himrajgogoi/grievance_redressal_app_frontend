@@ -19,8 +19,9 @@ import {
 import TitleComponent from "../components/title";
 import { toast } from "react-toastify";
 import imageCompression from "browser-image-compression";
-import isEmail from "validator/lib/isEmail";
 import Departments from "../components/departments";
+import { useRouter } from "next/router";
+import { isEmail, isPhone } from "../components/validator";
 
 
 
@@ -36,6 +37,8 @@ export default function Form() {
   const [captchaCode, setCaptchaCode] = useState(null);
 
   const recaptchaRef = React.createRef();
+
+  const router = useRouter();
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -58,7 +61,7 @@ export default function Form() {
       });
       if (
         name &&
-        phone && phone > 0 && phone.toString().length === 10 && isEmail(email) &&
+        isPhone(phone) && isEmail(email) &&
         department &&
         where &&
         description &&
@@ -98,25 +101,35 @@ export default function Form() {
         }
         axios
           .post("/api/main", creds)
-          .then((res) =>
+          .then((res) =>{
+
             toast.update(tId, {
               render: "Posted successfully!",
               type: "success",
               autoClose: 2000,
               isLoading: false,
-            })
-          )
-          .catch((error) =>
+            });
+            
+            setTimeout(()=>{
+              router.push("/");
+            },2000);
+          })
+          .catch((error) =>{
             toast.update(tId, {
               render: "OOPS! An error occured.",
               type: "error",
               autoClose: 2000,
               isLoading: false,
-            })
-          );
+            });
+
+            setTimeout(()=>{
+              window.location.reload();
+            },2000);
+
+          });
       } else {
         toast.update(tId, {
-          render: "OOPS! Some necessary fields are missing",
+          render: "OOPS! Some necessary fields are missing or invalid input!",
           type: "error",
           autoClose: 2000,
           isLoading: false,
@@ -161,7 +174,7 @@ export default function Form() {
                   required
                   type="number"
                   id="outlined-required"
-                  label="Phone-No."
+                  label="Phone-No. (dont add +91)"
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </Grid>

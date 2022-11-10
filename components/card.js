@@ -42,6 +42,10 @@ export default function BasicCard(props) {
       >
         <Box sx={{ p: 2, width: 275 }}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            name of the griever: <strong>{props.issue.name}</strong>
+          </Typography>
+          <br/>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             where: <strong>{props.where}</strong>
           </Typography>
           <br/>
@@ -57,7 +61,7 @@ export default function BasicCard(props) {
             availability time: <strong>{props.issue.availability_time}</strong>
           </Typography>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            contact number: <strong>{props.issue.phone}</strong>
+             <a href={"tel:" + props.issue.phone}>call: <strong>{props.issue.phone}</strong></a>
           </Typography>
         </Box>
       </Popover>
