@@ -61,7 +61,7 @@ export default function BasicCard(props) {
             availability time: <strong>{props.issue.availability_time}</strong>
           </Typography>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-             <a href={"tel:" + props.issue.phone}>call: <strong>{props.issue.phone}</strong></a>
+             <a href={"tel:" + props.issue.phone}><Chip sx={{color:"white", backgroundColor:'green'}} label="Call the griever"></Chip></a>
           </Typography>
         </Box>
       </Popover>
