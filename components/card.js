@@ -11,7 +11,7 @@ import {
   Popover,
 } from "@mui/material";
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "@mui/material";
 import TextField from "@mui/material";
 import Departments from "./departments";
@@ -20,7 +20,9 @@ import { Colors } from "./departments";
 
 // creating a card component for displaying the issues
 export default function BasicCard(props) {
+
   const [anchor, setAnchor] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
   const openPopover = (event) => {
     setAnchor(event.currentTarget);
   };
@@ -28,6 +30,13 @@ export default function BasicCard(props) {
   const handleClose = () => {
     setAnchor(null);
   };
+
+   // for verifying whether there is a logged in user or not
+   useEffect(() => {
+    if (Cookies.get("Token")) {
+      setLoggedIn(true);
+    }
+  },[]);
 
   return (
     <>
@@ -60,9 +69,11 @@ export default function BasicCard(props) {
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             availability time: <strong>{props.issue.availability_time}</strong>
           </Typography>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-             <a href={"tel:" + props.issue.phone}><Chip sx={{color:"white", backgroundColor:'green'}} label="Call the griever"></Chip></a>
-          </Typography>
+          {loggedIn &&    
+            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+              <a href={"tel:" + props.issue.phone}><Chip sx={{color:"white", backgroundColor:'green'}} label="Call the griever"></Chip></a>
+            </Typography>
+          }
         </Box>
       </Popover>
       <Card sx={{ width: 275, height: 410, pb: 1 }}>
