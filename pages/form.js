@@ -15,6 +15,7 @@ import {
   Grid,
   TextareaAutosize,
   OutlinedInput,
+  Typography,
 } from "@mui/material";
 import TitleComponent from "../components/title";
 import { toast } from "react-toastify";
@@ -39,6 +40,8 @@ export default function Form() {
   const recaptchaRef = React.createRef();
 
   const router = useRouter();
+
+
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -142,12 +145,15 @@ export default function Form() {
 
   // handling form submission
   const submit = async () => {
+
     recaptchaRef.current.execute();
   };
 
   return (
     <Box sx={{ m: 4, minHeight: "80vh" }}>
       <TitleComponent title="Post an Issue." />
+      <Typography>Before filling up the details, wait for the reCaptcha to load on bottom right. If it has not, refresh the page.</Typography>
+      <br/>
       <Box
         component="form"
         sx={{
@@ -262,6 +268,7 @@ export default function Form() {
                     size="large"
                     component="span"
                     sx={{ m: 1 }}
+
                   >
                     Upload a photo
                   </Button>
@@ -285,6 +292,7 @@ export default function Form() {
             /> */}
       </Box>
       <Button
+        
         type="button"
         variant="contained"
         onClick={submit}
