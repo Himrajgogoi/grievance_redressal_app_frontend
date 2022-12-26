@@ -152,7 +152,7 @@ export default function Form() {
   return (
     <Box sx={{ m: 4, minHeight: "80vh" }}>
       <TitleComponent title="Post an Issue." />
-      <Typography>Before filling up the details, wait for the reCaptcha to load on bottom right. If it has not, refresh the page.</Typography>
+      <Typography>Before filling up the details, wait for the reCaptcha to load at the bottom right. If it has not, refresh the page.</Typography>
       <br/>
       <Box
         component="form"

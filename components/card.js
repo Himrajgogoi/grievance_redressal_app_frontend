@@ -71,7 +71,7 @@ export default function BasicCard(props) {
           </Typography>
           {loggedIn &&    
             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-              <a href={"tel:" + props.issue.phone}><Chip sx={{color:"white", backgroundColor:'green'}} label="Call the griever"></Chip></a>
+              <a href={"tel:" + props.issue.phone}><Button variant="contained" color="success" size="small">Call the griever</Button></a>
             </Typography>
           }
         </Box>
@@ -83,7 +83,7 @@ export default function BasicCard(props) {
           image={props.issue.image ?? "/default_background.jpg"}
           alt="Issue Photo"
         />
-        <CardContent>
+        <CardContent  onClick={openPopover}>
           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
             {props.where}
           </Typography>
@@ -96,7 +96,6 @@ export default function BasicCard(props) {
               },
             }}
             component="div"
-            onClick={openPopover}
           >
             {props.description}
           </Typography>
