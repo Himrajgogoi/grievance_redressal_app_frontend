@@ -23,8 +23,7 @@ import imageCompression from "browser-image-compression";
 import Departments from "../components/departments";
 import { useRouter } from "next/router";
 import { isEmail, isPhone } from "../components/validator";
-
-
+import Loader from "../components/Loader";
 
 export default function Form() {
   const [name, setName] = useState(null);
@@ -35,13 +34,14 @@ export default function Form() {
   const [description, setDescription] = useState(null);
   const [availability_time, setAvailability_time] = useState(null);
   const [image, setImage] = useState(null);
+  const [imageLoader, setImageLoader] = useState(null);
   const [captchaCode, setCaptchaCode] = useState(null);
 
   const recaptchaRef = React.createRef();
 
   const router = useRouter();
 
-
+  const refForm = useRef(null);
 
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -51,25 +51,24 @@ export default function Form() {
       reader.onerror = (error) => reject(error);
     });
 
-
   /// to initialize reCaptcha and post an issue if not spam
   const onReCAPTCHAChange = async (captchaCode) => {
     if (!captchaCode) {
-      toast.error("An error occured!",{autoClose:2000});
+      toast.error("An error occured!", { autoClose: 2000 });
       return;
-    } 
-    else {
+    } else {
       var tId = toast.loading("Posting...", {
         position: toast.POSITION.TOP_CENTER,
       });
       if (
         name &&
-        isPhone(phone) && isEmail(email) &&
+        isPhone(phone) &&
+        isEmail(email) &&
         department &&
         where &&
         description &&
-        availability_time) {
-
+        availability_time
+      ) {
         let creds;
         if (image) {
           const compressedImage = await imageCompression(image, {
@@ -104,20 +103,19 @@ export default function Form() {
         }
         axios
           .post("/api/main", creds)
-          .then((res) =>{
-
+          .then((res) => {
             toast.update(tId, {
               render: "Posted successfully!",
               type: "success",
               autoClose: 2000,
               isLoading: false,
             });
-            
-            setTimeout(()=>{
+
+            setTimeout(() => {
               router.push("/");
-            },2000);
+            }, 2000);
           })
-          .catch((error) =>{
+          .catch((error) => {
             toast.update(tId, {
               render: "OOPS! An error occured.",
               type: "error",
@@ -125,10 +123,9 @@ export default function Form() {
               isLoading: false,
             });
 
-            setTimeout(()=>{
+            setTimeout(() => {
               window.location.reload();
-            },2000);
-
+            }, 2000);
           });
       } else {
         toast.update(tId, {
@@ -141,19 +138,20 @@ export default function Form() {
     }
     recaptchaRef.current.reset();
   };
-  
 
   // handling form submission
   const submit = async () => {
-
     recaptchaRef.current.execute();
   };
 
   return (
     <Box sx={{ m: 4, minHeight: "80vh" }}>
-      <TitleComponent title="Post an Issue." />
-      <Typography>Before filling up the details, wait for the reCaptcha to load at the bottom right. If it has not, refresh the page.</Typography>
-      <br/>
+      <TitleComponent title="Post an Issue." ref={refForm} />
+      <Typography>
+        Before filling up the details, wait for the reCaptcha to load at the
+        bottom right. If it has not, refresh the page.
+      </Typography>
+      <br />
       <Box
         component="form"
         sx={{
@@ -249,6 +247,9 @@ export default function Form() {
                 />
               </Grid>
               <Grid item xs={12} lg={6}>
+                {imageLoader === "uploading" && <Loader />}
+                {imageLoader === "uploaded" && `image: ${image.name}`}
+                <br/>
                 <label htmlFor="contained-button-file">
                   <Input
                     accept="image/*"
@@ -256,11 +257,13 @@ export default function Form() {
                     type="file"
                     sx={{ display: "none", m: 1 }}
                     onChange={(e) => {
+                      setImageLoader("uploading");
                       setImage(e.target.files[0]);
                       toast.success("Selected Image!", {
                         autoClose: 2000,
                         position: toast.POSITION.TOP_CENTER,
                       });
+                      setImageLoader("uploaded");
                     }}
                   />
                   <Button
@@ -268,7 +271,6 @@ export default function Form() {
                     size="large"
                     component="span"
                     sx={{ m: 1 }}
-
                   >
                     Upload a photo
                   </Button>
@@ -292,7 +294,6 @@ export default function Form() {
             /> */}
       </Box>
       <Button
-        
         type="button"
         variant="contained"
         onClick={submit}

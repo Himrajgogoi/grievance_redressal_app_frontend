@@ -30,3 +30,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+apache_bench_test.txt
+load_test.json
