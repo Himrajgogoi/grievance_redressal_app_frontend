@@ -23,6 +23,11 @@ export default function SignIn() {
   const [password, setPassword] = useState(null);
 
   const router = useRouter();
+
+
+  useEffect(()=>{
+    if(Cookies.get("Token")) router.replace("/")
+  })
   
   // handle signIn admin
   const signIn = () => {

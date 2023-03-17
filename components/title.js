@@ -14,7 +14,7 @@ function TitleComponent(props) {
   },[])
 
   return (
-    <h2 className={styles.header}>{props.title}{department && ` of ${department === "0"?"Root": Departments[Number(department)-1]} Department`}</h2>
+    <h2 className={styles.header}>{props.title}{department && !props.page && ` of ${department === "0"?"Root": Departments[Number(department)-1]} Department`}</h2>
   )
 }
 

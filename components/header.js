@@ -91,7 +91,7 @@ function Header(props) {
           >
             <MenuItem>
               <Link underline="none" color="inherit" href="/">
-                HOME
+                Home
               </Link>
             </MenuItem>
             <MenuItem>
@@ -102,6 +102,11 @@ function Header(props) {
             <MenuItem>
               <Link underline="none" color="inherit" href="/done">
                 Addressed
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link underline="none" color="inherit" href="/aboutTheApp">
+                How to use
               </Link>
             </MenuItem>
             {department === "0" &&   <MenuItem>
@@ -159,7 +164,7 @@ function Header(props) {
             },
           }}
         >
-          <Grid item lg={8}>
+          <Grid item lg={9}>
             <Grid container sx={{ml:1}}>
               <Grid item lg={1}>
                 <Link underline="none" color="inherit" href="/">
@@ -174,6 +179,11 @@ function Header(props) {
               <Grid item lg={1} sx={{ml:3}}>
                 <Link underline="none" color="inherit" href="/done">
                   Addressed
+                </Link>
+              </Grid>
+              <Grid item lg={1} sx={{ml:3}}>
+                <Link underline="none" color="inherit" href="/aboutTheApp">
+                How to use
                 </Link>
               </Grid>
               {department === "0" && <Grid item lg={1} sx={{ml:3}}>
@@ -193,7 +203,7 @@ function Header(props) {
               {department === "0"?"Root": Departments[Number(department)-1]} Department Admin
             </Grid>
           }
-          <Grid item lg={2}>
+          <Grid item lg={3}>
             <Grid container spacing={1}>
               <Grid item lg={7}>
                 <Link href="/form">
